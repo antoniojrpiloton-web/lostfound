@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Localization\ContentTranslationService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,11 +38,21 @@ class Category extends Model
         return $this->hasMany(ItemReport::class);
     }
 
-    public function label(?string $locale = null): string
+    public function label(?string $locale = null, bool $cacheOnly = true): string
     {
         $locale ??= app()->getLocale();
         $labels = $this->labels ?? [];
 
-        return $labels[$locale] ?? $labels['en'] ?? $this->slug;
+        if (! empty($labels[$locale])) {
+            return (string) $labels[$locale];
+        }
+
+        $base = (string) ($labels['en'] ?? $this->slug);
+
+        if ($locale !== 'en') {
+            return app(ContentTranslationService::class)->translateString($base, $locale, $cacheOnly);
+        }
+
+        return $base;
     }
 }

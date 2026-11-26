@@ -134,7 +134,7 @@ class LocalizationTest extends TestCase
         Http::fake([
             'http://translator.local/translate' => Http::sequence()
                 ->push(['translatedText' => '스테이션 2 근처에서 발견된 검은색 가죽 지갑입니다.'], 200)
-                ->push([], 500),
+                ->whenEmpty(Http::response([], 500)),
         ]);
 
         $translationService = app(ContentTranslationService::class);
@@ -169,5 +169,79 @@ class LocalizationTest extends TestCase
         $failedCall = $translationService->translateReportField($report, 'description', 'ja');
         $this->assertFalse($failedCall['translated']);
         $this->assertSame('Black leather wallet found near Station 2.', $failedCall['text']);
+    }
+
+    public function test_google_free_provider_translates_and_caches_dynamic_report_fields_and_categories(): void
+    {
+        $category = Category::factory()->create([
+            'labels' => ['en' => 'Electronics'],
+        ]);
+        $barangay = Barangay::factory()->create();
+        $report = ItemReport::factory()->create([
+            'type' => ReportType::Found,
+            'category_id' => $category->id,
+            'barangay_id' => $barangay->id,
+            'verification_status' => VerificationStatus::Verified,
+            'item_status' => ItemStatus::InCustody,
+            'is_public' => true,
+            'item_name' => 'Ocean Blue 10L Waterproof Dry Bag',
+        ]);
+
+        SystemSetting::query()->updateOrCreate(
+            ['key' => 'translation.content_enabled'],
+            ['group' => 'localization', 'value' => ['value' => true]]
+        );
+        app(MasterDataCacheService::class)->forgetSettings();
+
+        config()->set('services.translation.provider', 'google_free');
+
+        Http::fake([
+            'https://translate.googleapis.com/translate_a/single*' => Http::sequence()
+                ->push([[['オーシャンブルー 10L 防水ドライバッグ', 'Ocean Blue 10L Waterproof Dry Bag', null, null, 10]]], 200)
+                ->push([[['電子機器', 'Electronics', null, null, 10]]], 200),
+        ]);
+
+        app()->setLocale('ja');
+
+        $this->assertSame('オーシャンブルー 10L 防水ドライバッグ', $report->translated('item_name', null, false));
+        $this->assertSame('オーシャンブルー 10L 防水ドライバッグ', $report->translated('item_name'));
+        $this->assertSame('電子機器', $category->label(null, false));
+        $this->assertSame('電子機器', $category->label());
+
+        Http::assertSentCount(2);
+        $this->assertSame(2, Translation::query()->count());
+    }
+
+    public function test_batch_translation_api_translates_and_caches_strings(): void
+    {
+        SystemSetting::query()->updateOrCreate(
+            ['key' => 'translation.content_enabled'],
+            ['group' => 'localization', 'value' => ['value' => true]]
+        );
+        app(MasterDataCacheService::class)->forgetSettings();
+
+        config()->set('services.translation.provider', 'google_free');
+
+        Http::fake([
+            'https://translate.googleapis.com/translate_a/single*' => Http::response(
+                [[["スマートシステム検索\n###BLFSEP###\n写真ディープ検索", '', null, null, 10]]],
+                200
+            ),
+        ]);
+
+        $this->postJson(route('api.translate.batch'), [
+            'locale' => 'ja',
+            'texts' => ['Smart System Search', 'Photo Deep Search'],
+        ])
+            ->assertOk()
+            ->assertJsonPath('translations.Smart System Search', 'スマートシステム検索')
+            ->assertJsonPath('translations.Photo Deep Search', '写真ディープ検索');
+
+        $this->postJson(route('api.translate.batch'), [
+            'locale' => 'ja',
+            'texts' => ['Smart System Search', 'Photo Deep Search'],
+        ])->assertOk();
+
+        Http::assertSentCount(1);
     }
 }

@@ -210,7 +210,7 @@
                                 </div>
                             @endif
                             <span class="position-absolute top-0 start-0 m-2 badge {{ $item->type->value === 'found' ? 'text-bg-primary' : 'text-bg-dark' }}">
-                                {{ $item->type->label() }}
+                                {{ __($item->type->label()) }}
                             </span>
                         </a>
 
@@ -222,7 +222,7 @@
 
                             <h2 class="h6 fw-semibold text-navy mb-1">
                                 <a href="{{ route('public.items.show', $item->reference_no) }}" class="text-decoration-none text-navy">
-                                    {{ $item->item_name }}
+                                    {{ $item->translated('item_name') }}
                                 </a>
                             </h2>
 
@@ -232,12 +232,12 @@
                             </div>
 
                             <p class="small text-secondary mb-3 flex-grow-1">
-                                {{ Illuminate\Support\Str::limit($item->description, 105) }}
+                                {{ Illuminate\Support\Str::limit($item->translated('description'), 105) }}
                             </p>
 
                             <div class="pt-2 border-top d-flex align-items-center justify-content-between small text-secondary">
                                 <span class="text-truncate me-2">
-                                    <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>{{ $item->location?->name ?? Illuminate\Support\Str::limit((string) ($item->location_details ?: 'Boracay Island'), 28) }}
+                                    <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>{{ $item->location?->name ?? Illuminate\Support\Str::limit((string) ($item->location_details ? $item->translated('location_details') : 'Boracay Island'), 28) }}
                                 </span>
                                 <span class="flex-shrink-0">{{ $item->occurred_date?->format('M d, Y') }}</span>
                             </div>

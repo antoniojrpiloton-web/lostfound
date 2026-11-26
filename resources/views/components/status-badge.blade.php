@@ -23,5 +23,5 @@
     @if ($dot)
         <span class="blf-status-dot" aria-hidden="true"></span>
     @endif
-    <span>{{ $text }}</span>
+    <span>{{ __($text) }}</span>
 </span>

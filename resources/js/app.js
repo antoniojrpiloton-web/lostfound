@@ -7,6 +7,7 @@ import { initCharts } from './core/charts';
 import { initDropzones } from './core/dropzone';
 import { initSmartSearch } from './core/smart-search';
 import { initDataTables } from './core/datatables';
+import { initAutoTranslate } from './core/auto-translate';
 import { startPhotoScan, animateMatchCounters, scoreTier } from './core/scanner';
 
 window.bootstrap = bootstrap;
@@ -22,4 +23,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initDropzones();
     initSmartSearch();
     initDataTables();
+    initAutoTranslate();
 });

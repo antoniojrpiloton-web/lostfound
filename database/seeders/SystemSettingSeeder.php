@@ -41,7 +41,7 @@ class SystemSettingSeeder extends Seeder
             ['key' => 'disposal.retention_days', 'group' => 'disposal', 'value' => ['value' => 180]],
             ['key' => 'institutions.admins_can_manage_staff', 'group' => 'institutions', 'value' => ['value' => true]],
             ['key' => 'notifications.email_enabled', 'group' => 'notifications', 'value' => ['value' => false]],
-            ['key' => 'translation.content_enabled', 'group' => 'localization', 'value' => ['value' => false]],
+            ['key' => 'translation.content_enabled', 'group' => 'localization', 'value' => ['value' => true]],
         ];
 
         foreach ($settings as $setting) {

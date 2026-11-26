@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', $report->item_name)
+@section('title', $itemNameTranslation['text'] ?? $report->item_name)
 
 @push('meta')
     <meta property="og:type" content="article">
@@ -17,7 +17,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
         <div>
             <div class="blf-page-eyebrow">{{ __('Verified Public Record') }}</div>
-            <h1 class="h4 text-navy fw-bold mb-0">{{ $report->item_name }} <code class="fs-6 ms-1">{{ $report->reference_no }}</code></h1>
+            <h1 class="h4 text-navy fw-bold mb-0">{{ $itemNameTranslation['text'] ?? $report->item_name }} <code class="fs-6 ms-1">{{ $report->reference_no }}</code></h1>
         </div>
         <a href="{{ route('public.items.index') }}" class="btn btn-sm btn-light bg-white border text-navy">
             <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>{{ __('Back to Listings') }}
@@ -44,7 +44,7 @@
                     <dd class="col-sm-8">{{ $report->occurred_date?->format('F d, Y') }}</dd>
 
                     <dt class="col-sm-4 text-secondary fw-normal">{{ __('Location / Area') }}</dt>
-                    <dd class="col-sm-8">{{ implode(', ', array_filter([$report->location?->name, $report->location_details])) ?: '—' }}</dd>
+                    <dd class="col-sm-8">{{ implode(', ', array_filter([$report->location?->name, $locationDetailsTranslation['text'] ?? $report->location_details])) ?: '—' }}</dd>
 
                     <dt class="col-sm-4 text-secondary fw-normal">{{ __('Description') }}</dt>
                     <dd class="col-sm-8">
@@ -94,7 +94,7 @@
                                         <img src="{{ route('public.items.image', [$sim->reference_no, $simThumb]) }}" alt="{{ $sim->item_name }}" class="w-100" style="height: 110px; object-fit: cover;">
                                     @endif
                                     <div class="p-2">
-                                        <div class="small fw-semibold text-navy text-truncate">{{ $sim->item_name }}</div>
+                                        <div class="small fw-semibold text-navy text-truncate">{{ $sim->translated('item_name') }}</div>
                                         <div class="text-primary" style="font-size: 0.72rem;"><code>{{ $sim->reference_no }}</code></div>
                                         <div class="text-secondary" style="font-size: 0.72rem;">{{ $sim->location?->name ?: ($sim->location_details ?: 'Boracay Island') }} · {{ $sim->occurred_date?->format('M d, Y') }}</div>
                                     </div>

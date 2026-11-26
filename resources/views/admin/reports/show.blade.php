@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('eyebrow', __('Smart Report Inspector'))
-@section('title', $report->item_name)
+@section('title', $report->translated('item_name'))
 
 @section('breadcrumbs')
     <x-breadcrumbs :items="[
@@ -69,10 +69,10 @@
                         <span class="blf-status-pill blf-pill-neutral"><i class="bi bi-lock" aria-hidden="true"></i>{{ __('Internal Only') }}</span>
                     @endif
                 </div>
-                <h2 class="h5 fw-bold text-navy mb-1">{{ $report->item_name }}</h2>
+                <h2 class="h5 fw-bold text-navy mb-1">{{ $report->translated('item_name') }}</h2>
                 <div class="small text-secondary d-flex flex-wrap gap-3">
                     <span><i class="bi bi-tag text-primary me-1" aria-hidden="true"></i>{{ $report->category?->parent ? $report->category->parent->label().' — ' : '' }}{{ $report->category?->label() }}</span>
-                    <span><i class="bi bi-geo-alt text-primary me-1" aria-hidden="true"></i>{{ implode(', ', array_filter([$report->location?->name, $report->location_details])) ?: '—' }}</span>
+                    <span><i class="bi bi-geo-alt text-primary me-1" aria-hidden="true"></i>{{ implode(', ', array_filter([$report->location?->name, $report->location_details ? $report->translated('location_details') : null])) ?: '—' }}</span>
                     <span><i class="bi bi-calendar3 text-primary me-1" aria-hidden="true"></i>{{ $report->occurred_date?->format('M d, Y') }}</span>
                 </div>
             </div>
@@ -163,14 +163,14 @@
 
                     <dl class="row mb-0">
                         <dt class="col-sm-3 text-secondary fw-normal">{{ __('Location Details') }}</dt>
-                        <dd class="col-sm-9">{{ implode(', ', array_filter([$report->location?->name, $report->location_details])) ?: '—' }}</dd>
+                        <dd class="col-sm-9">{{ implode(', ', array_filter([$report->location?->name, $report->location_details ? $report->translated('location_details') : null])) ?: '—' }}</dd>
 
                         <dt class="col-sm-3 text-secondary fw-normal">{{ __('Description') }}</dt>
-                        <dd class="col-sm-9">{{ $report->description }}</dd>
+                        <dd class="col-sm-9">{{ $report->translated('description') }}</dd>
 
                         @if ($report->distinguishing_features)
                             <dt class="col-sm-3 text-secondary fw-normal">{{ __('Distinguishing Features') }}</dt>
-                            <dd class="col-sm-9">{{ $report->distinguishing_features }}</dd>
+                            <dd class="col-sm-9">{{ $report->translated('distinguishing_features') }}</dd>
                         @endif
 
                         @if ($report->finder_name)

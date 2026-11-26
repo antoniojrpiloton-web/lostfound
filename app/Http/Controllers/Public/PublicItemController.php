@@ -84,7 +84,9 @@ class PublicItemController extends Controller
                 && in_array($image->validation_status, [ImageValidationStatus::Passed, ImageValidationStatus::Overridden], true)
         );
 
-        $descriptionTranslation = $this->contentTranslation->translateReportField($report, 'description');
+        $itemNameTranslation = $this->contentTranslation->translateReportField($report, 'item_name', null, true);
+        $descriptionTranslation = $this->contentTranslation->translateReportField($report, 'description', null, true);
+        $locationDetailsTranslation = $this->contentTranslation->translateReportField($report, 'location_details', null, true);
 
         $similarItems = ItemReport::query()
             ->publiclyVisible()
@@ -99,7 +101,7 @@ class PublicItemController extends Controller
         $fbShareUrl = route('public.items.show', $report->reference_no);
         $fbCaption = $this->facebookPoster->buildCaption($report, $fbShareUrl);
 
-        return view('public.items.show', compact('report', 'publicImages', 'descriptionTranslation', 'similarItems', 'fbShareUrl', 'fbCaption'));
+        return view('public.items.show', compact('report', 'publicImages', 'itemNameTranslation', 'descriptionTranslation', 'locationDetailsTranslation', 'similarItems', 'fbShareUrl', 'fbCaption'));
     }
 
     public function fbPoster(Request $request, string $referenceNo): Response

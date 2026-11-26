@@ -49,7 +49,7 @@ return [
     ],
 
     'translation' => [
-        'provider' => env('TRANSLATION_PROVIDER', 'libretranslate'),
+        'provider' => env('TRANSLATION_PROVIDER', 'google_free'),
         'url' => env('TRANSLATION_API_URL', ''),
         'api_key' => env('TRANSLATION_API_KEY', ''),
         'timeout' => (int) env('TRANSLATION_TIMEOUT', 5),

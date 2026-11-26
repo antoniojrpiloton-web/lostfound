@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Api\ImagePrecheckController;
 use App\Http\Controllers\Api\Select2LookupController;
+use App\Http\Controllers\Api\TranslationBatchController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\InvitationAcceptanceController;
 use App\Http\Controllers\MilestoneStubController;
@@ -54,6 +55,10 @@ Route::post('/api/smart-search', SmartSearchController::class)
 Route::post('/api/images/precheck', ImagePrecheckController::class)
     ->middleware('throttle:30,1')
     ->name('api.images.precheck');
+
+Route::post('/api/translate/batch', TranslationBatchController::class)
+    ->middleware('throttle:120,1')
+    ->name('api.translate.batch');
 
 Route::prefix('api/select2')->middleware('throttle:60,1')->name('api.select2.')->group(function (): void {
     Route::get('/categories', [Select2LookupController::class, 'categories'])->name('categories');

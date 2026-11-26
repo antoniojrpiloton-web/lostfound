@@ -76,11 +76,13 @@ class AdminDataTableController extends Controller
         $data = $rows->map(function (ItemReport $report): array {
             $actions = '<a href="'.e(route('admin.reports.show', $report)).'" class="btn btn-sm btn-outline-primary" title="'.e(__('Review')).'"><i class="bi bi-eye me-1"></i>'.e(__('Review')).'</a>';
 
+            $locationText = $report->location?->name ?: ($report->location_details ? $report->translated('location_details') : '—');
+
             return [
                 $actions,
-                '<div class="fw-medium text-navy">'.e($report->item_name).'</div><div class="small text-secondary">'.e((string) $report->category?->label()).'</div>',
+                '<div class="fw-medium text-navy">'.e($report->translated('item_name')).'</div><div class="small text-secondary">'.e((string) $report->category?->label()).'</div>',
                 $this->badge($report->type),
-                e((string) ($report->location?->name ?: ($report->location_details ?: '—'))),
+                e((string) $locationText),
                 $this->badge($report->verification_status, $report->verification_status->label()),
                 $this->badge($report->item_status),
                 '<code class="small text-primary">'.e($report->reference_no).'</code>',
@@ -265,7 +267,7 @@ class AdminDataTableController extends Controller
             return [
                 $actions,
                 '<div class="fw-medium text-navy">'.e((string) $claim->claimant?->name).'</div><div class="small text-secondary">'.e((string) $claim->claimant?->email).'</div>',
-                '<div class="fw-medium text-navy">'.e((string) $claim->itemReport?->item_name).'</div><code class="small text-primary">'.e((string) $claim->itemReport?->reference_no).'</code>',
+                '<div class="fw-medium text-navy">'.e((string) $claim->itemReport?->translated('item_name')).'</div><code class="small text-primary">'.e((string) $claim->itemReport?->reference_no).'</code>',
                 $this->badge($claim->status),
                 '<code class="small text-secondary">'.e($claim->reference_no).'</code>',
                 '<span class="small text-secondary">'.e((string) $claim->submitted_at?->format('M d, Y H:i')).'</span>',

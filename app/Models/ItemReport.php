@@ -7,6 +7,7 @@ use App\Enums\ItemStatus;
 use App\Enums\ReportType;
 use App\Enums\VerificationStatus;
 use App\Models\Concerns\HasEncryptedRouteKey;
+use App\Services\Localization\ContentTranslationService;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -251,5 +252,11 @@ class ItemReport extends Model
         }
 
         return CustodyStage::AtStation;
+    }
+
+    public function translated(string $field, ?string $locale = null, bool $cacheOnly = true): string
+    {
+        return app(ContentTranslationService::class)
+            ->translateReportField($this, $field, $locale, $cacheOnly)['text'];
     }
 }
