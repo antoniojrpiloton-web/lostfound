@@ -1,0 +1,90 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--blf-blue);
+    --bs-btn-border-color: var(--blf-blue);
+    --bs-btn-hover-bg: var(--blf-blue-dark);
+    --bs-btn-hover-border-color: var(--blf-blue-dark);
+    --bs-btn-active-bg: #1e3a8a;
+    --bs-btn-active-border-color: #1e3a8a;
+    --bs-btn-disabled-bg: var(--blf-blue);
+    --bs-btn-disabled-border-color: var(--blf-blue);
+}
+
+.btn-secondary {
+    --bs-btn-bg: #374151;
+    --bs-btn-border-color: #374151;
+    --bs-btn-hover-bg: #1f2937;
+    --bs-btn-hover-border-color: #1f2937;
+    --bs-btn-active-bg: #111827;
+    --bs-btn-active-border-color: #111827;
+}
+
+.btn-success {
+    --bs-btn-bg: #059669;
+    --bs-btn-border-color: #059669;
+    --bs-btn-hover-bg: #047857;
+    --bs-btn-hover-border-color: #047857;
+    --bs-btn-active-bg: #065f46;
+    --bs-btn-active-border-color: #065f46;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--blf-blue);
+    --bs-btn-border-color: #cbd5e1;
+    --bs-btn-hover-bg: var(--blf-blue);
+    --bs-btn-hover-border-color: var(--blf-blue);
+    --bs-btn-active-bg: var(--blf-blue-dark);
+    --bs-btn-active-border-color: var(--blf-blue-dark);
+}
+
+.bg-navy {
+    background-color: var(--blf-navy) !important;
+}
+
+.bg-sand {
+    background-color: var(--blf-sand) !important;
+}
+
+.text-navy {
+    color: var(--blf-navy) !important;
+}
+
+.text-ocean {
+    color: var(--blf-ocean) !important;
+}
+
+.card {
+    --bs-card-border-color: var(--blf-border);
+    --bs-card-border-radius: var(--blf-radius);
+    box-shadow: var(--blf-shadow-sm);
+}
+
+:focus-visible {
+    outline: 2px solid var(--blf-ocean);
+    outline-offset: 2px;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1080;
+    padding: 0.5rem 1rem;
+    background: var(--blf-navy);
+    color: #fff;
+}
+
+.skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+}
